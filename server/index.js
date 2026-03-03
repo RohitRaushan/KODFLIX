@@ -15,7 +15,7 @@ app.use(express.json());
 
 const fetchTMDB = async (endpoint) => {
   const separator = endpoint.includes('?') ? '&' : '?';
-  const url = `${BASE_URL}${endpoint}${separator}api_key=${API_KEY}`;
+  const url = `${BASE_URL}${endpoint}${separator}api_key=${API_KEY}&language=en-US`;
   const response = await fetch(url);
   if (!response.ok) throw new Error('Failed to fetch data');
   const data = await response.json();

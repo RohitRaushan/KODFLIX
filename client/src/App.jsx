@@ -3,12 +3,10 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import MovieRow from './components/MovieRow'
 
-const API_BASE = import.meta.env.DEV ? 'http://localhost:5000/api' : `https://api.themoviedb.org/3`;
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY || '995c76835f8113d2d2ce0f2e788b6bb2';
+const API_BASE = import.meta.env.DEV ? 'http://localhost:5000/api' : 'https://kodflix-api.onrender.com/api'
 
 const fetchMovies = async (endpoint) => {
-  const separator = endpoint.includes('?') ? '&' : '?';
-  const res = await fetch(`${API_BASE}/${endpoint}${separator}api_key=${API_KEY}&language=en-US`);
+  const res = await fetch(`${API_BASE}/${endpoint}`);
   return res.json();
 };
 
@@ -25,11 +23,11 @@ function App() {
     const fetchAllData = async () => {
       try {
         const [trendingData, popularData, topRatedData, upcomingData, originalsData] = await Promise.all([
-          fetchMovies('trending/movie/week'),
-          fetchMovies('movie/popular'),
-          fetchMovies('movie/top_rated'),
-          fetchMovies('movie/upcoming'),
-          fetchMovies('discover/movie?with_networks=213')
+          fetchMovies('trending'),
+          fetchMovies('popular'),
+          fetchMovies('top-rated'),
+          fetchMovies('upcoming'),
+          fetchMovies('netflix-originals')
         ])
 
         setTrending(trendingData.results || [])
@@ -39,7 +37,7 @@ function App() {
         setNetflixOriginals(originalsData.results || [])
         setLoading(false)
       } catch (err) {
-        setError('Failed to load movies. Make sure the server is running.')
+        setError('Failed to load movies. Please try again later.')
         setLoading(false)
       }
     }
